@@ -1,0 +1,44 @@
+group 'someId'
+version '1.0'
+apply plugin: 'java'
+apply plugin: 'ru.d10xa.allure'
+
+
+sourceCompatibility = 1.5
+test{
+    testLogging.showStandardStreams = true
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.11'
+    compile group: 'junit', name: 'junit', version: '4.12'
+    compile group: 'org.seleniumhq.selenium', name: 'selenium-java', version: '3.0.1'
+    compile group: 'org.apache.poi', name: 'poi', version: '3.15'
+}
+
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath "ru.d10xa:gradle-allure-plugin:0.5.5"
+    }
+}
+
+
+allure {
+    aspectjweaver = true
+    // Choose your test framework.
+    junit = true
+    spock = false
+}
+
+//чтобы использовать TestNG:
+//test {
+//    useTestNG()
+//}
+tasks.withType(Test)*.finalizedBy allureReport
